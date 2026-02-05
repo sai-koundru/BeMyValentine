@@ -29,7 +29,7 @@
     }
 
     @keyframes pop {
-      from { transform: scale(0.85); opacity: 0; }
+      from { transform: scale(0.9); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
 
@@ -37,6 +37,7 @@
       color: #8b5fbf;
       margin-bottom: 10px;
       font-weight: 700;
+      min-height: 40px;
     }
 
     p {
@@ -80,35 +81,10 @@
     #noBtn {
       background: #e6e0ea;
       color: #5c4b66;
-      position: relative;
-    }
-
-    .shake {
-      animation: shake 0.3s;
-    }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
     }
 
     .hidden {
       display: none;
-    }
-
-    .loader {
-      font-size: 18px;
-      color: #8b5fbf;
-      animation: blink 1.2s infinite;
-    }
-
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
     }
 
     .message {
@@ -126,11 +102,13 @@
 
 <body>
 
+  <!-- PAGE 1 -->
   <div class="card" id="mainCard">
     <h1 id="nameText"></h1>
     <p>Will you be my Valentine? 💗</p>
 
-    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXN2cjFzbnptc29ncjNyMjc5bGdnYWNveGQxdDd2bHVlZGlwNTEzaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IzXiddo2twMmdmU8Lv/giphy.gif" />
+    <!-- CUTE PUG IMAGE -->
+    <img src="https://i.imgur.com/3ZQ3Z0R.jpg" alt="Cute Pug" />
 
     <div class="buttons">
       <button id="yesBtn">Yes 💖</button>
@@ -138,36 +116,38 @@
     </div>
   </div>
 
-  <div class="card hidden" id="loaderCard">
-    <p class="loader">Checking compatibility… 💞</p>
-  </div>
-
+  <!-- PAGE 2 -->
   <div class="card hidden" id="messageCard">
+    <!-- SECOND IMAGE -->
+    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXN2cjFzbnptc29ncjNyMjc5bGdnYWNveGQxdDd2bHVlZGlwNTEzaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IzXiddo2twMmdmU8Lv/giphy.gif" />
+
     <p class="message">
       I didn’t make this to impress you.<br><br>
       I made this because you matter to me.<br><br>
       Because every time I think of happiness, somehow you’re part of it.<br><br>
-      I really hope this made you smile 💖
     </p>
-    <h2>💘 100% MATCH FOUND 💘</h2>
+
+    <h2> ilyy Junior 💌</h2>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    /* NAME TYPING */
+    /* DELAYED NAME TYPING */
     const name = "Junior ❤️";
-    let i = 0;
     const nameText = document.getElementById("nameText");
+    let i = 0;
 
-    function typeName() {
-      if (i < name.length) {
-        nameText.textContent += name.charAt(i);
-        i++;
-        setTimeout(typeName, 120);
+    setTimeout(() => {
+      function typeName() {
+        if (i < name.length) {
+          nameText.textContent += name.charAt(i);
+          i++;
+          setTimeout(typeName, 180); // slower typing
+        }
       }
-    }
-    typeName();
+      typeName();
+    }, 800); // initial delay before name starts
 
     /* NO BUTTON LOGIC */
     let noCount = 0;
@@ -175,39 +155,21 @@
 
     noBtn.addEventListener("click", () => {
       noCount++;
-
-      if (noCount === 1) {
-        noBtn.classList.add("shake");
-        setTimeout(() => noBtn.classList.remove("shake"), 300);
-      } 
-      else if (noCount === 2) {
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 200 - 100;
-        noBtn.style.transform = `translate(${x}px, ${y}px)`;
-      } 
-      else if (noCount === 3) {
-        noBtn.textContent = "Okay okay… 🥺";
-      } 
-      else {
+      if (noCount > 2) {
         document.getElementById("yesBtn").click();
       }
     });
 
-    /* YES BUTTON FLOW */
+    /* YES BUTTON */
     document.getElementById("yesBtn").addEventListener("click", () => {
       document.getElementById("mainCard").classList.add("hidden");
-      document.getElementById("loaderCard").classList.remove("hidden");
+      document.getElementById("messageCard").classList.remove("hidden");
 
-      setTimeout(() => {
-        document.getElementById("loaderCard").classList.add("hidden");
-        document.getElementById("messageCard").classList.remove("hidden");
-
-        confetti({
-          particleCount: 160,
-          spread: 90,
-          origin: { y: 0.6 }
-        });
-      }, 2200);
+      confetti({
+        particleCount: 160,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
     });
   </script>
 
